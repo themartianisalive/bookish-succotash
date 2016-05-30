@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="yes"?>
+<svg width="700px" height="700px" xmlns="http://www.w3.org/2000/svg" version="1.1">
+	<polygon id="a" points="217,63 80,257 255,202 289,125" style="fill: none; stroke: #000; stroke-width: 1;" />
+	<polygon id="b" points="80,257 113,410 183,328 332,356 289,125 255,202" style="fill: none; stroke: #000; stroke-width: 1;" />
+	<polygon id="c" points="332,356 183,328 113,410 360,446" style="fill: none; stroke: #000; stroke-width: 1;" />
+	<polygon id="d" points="332,356 360,446 500,246 480,100 390,140 289,125" style="fill: none; stroke: #000; stroke-width: 1;" />
+	<polygon id="e" points="289,125 390,140 480,100 217,63" style="fill: none; stroke: #000; stroke-width: 1;" />
+	<polygon id="f" points="480,100 500,246 560,160" style="fill: none; stroke: #000; stroke-width: 1;" />
+
+  <circle cx="286" cy="160" r="2" style="fill: #000; stroke: #000; stroke-width: 1;" room-id="b" />
+  <circle cx="470" cy="130" r="2" style="fill: #000; stroke: #000; stroke-width: 1;" room-id="d" />
+  <circle cx="180" cy="150" r="2" style="fill: #000; stroke: #000; stroke-width: 1;" room-id="a" />
+</svg>

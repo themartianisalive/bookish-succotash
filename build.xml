@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+
+<project name="Proyecto02 [GC 2016-2]" default="run" basedir=".">
+  <description>
+    Facultad de Ciencias, UNAM
+    Geometria Computacional 2016-2
+
+    Proyecto 02 - Sistemas de vigilancia.
+    Ver el archivo de descripción.    
+  </description>
+
+  <!-- Global properties -->
+  <property name="src"          location="src" />
+  <property name="build"        location="bin" />
+  <property name="processing"   location="/Applications/processing-3.0.1.app/Contents/Java" />
+
+  <!-- OS Check -->
+  <condition property="nativeOpenGL" value="windows-amd64">
+    <os family="windows"/>
+  </condition>
+  <condition property="nativeOpenGL" value="macosx-universal">
+    <os family="mac"/>
+  </condition>
+  <condition property="nativeOpenGL" value="linux-amd64">
+    <os family="unix"/>
+  </condition>
+
+  <!-- Define the classpath which include the libs -->
+  <path id="project.class.path">
+    <pathelement location="${processing}/core/library/core.jar" />
+    <pathelement location="${processing}/core/library/jogl-all.jar" />
+    <pathelement location="${processing}/core/library/gluegen-rt.jar" />
+    <pathelement location="${processing}/core/library/gluegen-rt-natives-${nativeOpenGL}.jar" />
+    <pathelement location="${processing}/core/library/jogl-all-natives-${nativeOpenGL}.jar" />
+    
+    <pathelement location="${build}" />
+  </path>
+
+  <!-- Clean the project -->
+  <target name="clean" description="clean up" >
+    <delete dir="${build}"/>
+  </target>
+
+  <!-- Create the build structure used by project -->
+  <target name="init">
+    <mkdir dir="${build}"/>
+  </target>
+
+  <!-- Compiles the Java code -->
+  <target name="compile" depends="init" description="compile the source " >
+    <javac srcdir="${src}" encoding="UTF-8"  destdir="${build}" debug="true" debuglevel="lines,vars,source">
+      <classpath refid="project.class.path" />
+    </javac>
+  </target>
+
+  <!-- Run the project -->
+  <target name="run" depends="compile">
+    <java fork="true" classname="geom.Main">
+      <classpath refid="project.class.path" />
+
+      <!-- Arguments -->
+      <arg value="${input}"/>
+    </java>
+  </target>
+</project>
