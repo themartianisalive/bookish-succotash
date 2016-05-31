@@ -7,18 +7,22 @@ import java.io.IOException;
 
 import geom.utils.DcelReader;
 import geom.structures.dcel.*;
+import geom.structures.extra.*;
 
 /**
  * Aplicación gráfica para el proyecto 02.
  */
 public class Proyecto02App extends PApplet {
-  Dcel face;
+  Dcel dcel;
+  Camera[] cameras;
+
   PShape plane;
   String filePath;
 
   public Proyecto02App(String filePath) throws Exception {
     this.filePath = filePath;
-    face = DcelReader.readSVG(filePath);
+    dcel = DcelReader.readSVG(filePath);
+    cameras = DcelReader.readCameras(filePath);
   }
   /**
    * Se ejecuta al incio de la app.

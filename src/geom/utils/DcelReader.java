@@ -1,6 +1,7 @@
 package geom.utils;
 
 import geom.structures.dcel.*;
+import geom.structures.extra.*;
 import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilder; 
@@ -76,6 +77,22 @@ public class DcelReader {
 		faces.put(id, face);
 	}
 	return new Dcel(vertices, halfEdges, faces);
+  }
+
+  public static Camera[] readCameras(String filePath) throws IOException, Exception {
+	NodeList cameras = getNodesByTag(filePath, "circle");
+	Camera[] tmp =  new Camera[cameras.getLength()];
+	
+	for (int i = 0; i < cameras.getLength(); ++i) {
+		Element e = (Element)cameras.item(i);
+
+		double x = Double.parseDouble(e.getAttribute("cx"));
+		double y = Double.parseDouble(e.getAttribute("cy"));
+		
+		String id = e.getAttribute("room-id");
+		tmp[i] = new Camera(x, y, id);
+	}
+	return tmp;
   }
 
   private static NodeList getNodesByTag(String filePath, String tagName) throws Exception {
