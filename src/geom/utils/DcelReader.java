@@ -39,15 +39,8 @@ public class DcelReader {
    * @return             La subdivisión leída del archivo.
    * @throws IOException Si el archivo no se puede leer o no existe.
    */
-  public static Dcel readSVG (String filePath) throws IOException, SAXException, 
-  													ParserConfigurationException {
-  	/* cargamos el xml */
-  	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-	DocumentBuilder db = dbf.newDocumentBuilder(); 
-	Document doc = db.parse(new File(filePath));
-	/* Sacamos los poligonos */
-	doc.getDocumentElement().normalize();  
-	NodeList polygons = doc.getElementsByTagName("polygon");
+  public static Dcel readSVG (String filePath) throws IOException, Exception {
+	NodeList polygons = getNodesByTag(filePath, "polygon");
 
 	TreeMap<String, Vertex>   vertices  = new TreeMap<String, Vertex>();
 	TreeMap<String, HalfEdge> halfEdges = new TreeMap<String, HalfEdge>();
@@ -82,7 +75,16 @@ public class DcelReader {
 		Face face = DcelUtils.buildFace(id, components);
 		faces.put(id, face);
 	}
-
 	return new Dcel(vertices, halfEdges, faces);
+  }
+
+  private static NodeList getNodesByTag(String filePath, String tagName) throws Exception {
+  	/* cargamos el xml */
+  	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+	DocumentBuilder db = dbf.newDocumentBuilder(); 
+	Document doc = db.parse(new File(filePath));
+	/* Sacamos los poligonos */
+	doc.getDocumentElement().normalize();  
+	return doc.getElementsByTagName(tagName);
   }
 }
