@@ -2,6 +2,7 @@ package geom.gui;
 
 import processing.core.PApplet;
 import processing.core.PShape;
+import processing.core.PGraphics;
 
 import java.io.IOException;
 
@@ -15,8 +16,8 @@ import geom.structures.extra.*;
 public class Proyecto02App extends PApplet {
   Dcel dcel;
   Camera[] cameras;
-
   PShape plane;
+  PGraphics graphics;
   String filePath;
 
   public Proyecto02App(String filePath) throws Exception {
@@ -33,6 +34,9 @@ public class Proyecto02App extends PApplet {
   @Override
   public void settings() {
     size(700, 700);
+    smooth();
+    pixelDensity(displayDensity());
+
   }
 
   /**
@@ -42,7 +46,6 @@ public class Proyecto02App extends PApplet {
   @Override
   public void setup() {
     frameRate(5);
-    plane = loadShape(filePath);
   }
 
   /**
@@ -54,7 +57,7 @@ public class Proyecto02App extends PApplet {
    */
   @Override
   public void draw() {
-    shape(plane, 50, 50, 650, 650);
+    dcel.draw(this.g, color(0, 0, 0), true);
   }
 
 }

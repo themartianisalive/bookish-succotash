@@ -206,7 +206,7 @@ public class Dcel {
 
         pGraphics.stroke(colorStroke);
         pGraphics.noFill();
-        pGraphics.endShape(pGraphics.CLOSE);
+        pGraphics.endShape();
       }
     }
   }
