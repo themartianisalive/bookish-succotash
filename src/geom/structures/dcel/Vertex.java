@@ -1,6 +1,10 @@
 package geom.structures.dcel;
 
 import geom.math.Vector;
+import java.util.TreeMap;
+import java.util.List;
+import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * Representación de un vertice de una DCEL de dos dimensiones.
@@ -62,6 +66,29 @@ public class Vertex extends Vector {
    */
   public String getId () {
     return this.id;
+  }
+
+  public static Vertex[] getCounterClockwiseVertexes(Vertex[] points) {
+    Vertex minX = new Vertex(Double.MAX_VALUE, 0);
+    for (Vertex v : points) {
+      if (v.x < minX.x)
+        minX = v;  
+    }
+
+    TreeMap<Double, Vertex> slopes =  new TreeMap<>();
+    for (Vertex v : points) {
+      double m = (v.y - minX.y) / (v.x - minX.x);
+      if (!v.equals(minX))
+        slopes.put(m,v);
+    }
+
+    Vertex[] vectorsBySlope =  new Vertex[points.length];
+    int i = 0;
+    for (Map.Entry<Double, Vertex> node : slopes.entrySet()) {
+      vectorsBySlope[i++] = node.getValue();
+    }
+
+    return vectorsBySlope;
   }
 
 }
