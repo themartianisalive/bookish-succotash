@@ -1,12 +1,25 @@
 package geom.gui;
 
 import processing.core.PApplet;
+import processing.core.PShape;
+
+import java.io.IOException;
+
+import geom.utils.DcelReader;
+import geom.structures.dcel.*;
 
 /**
  * Aplicación gráfica para el proyecto 02.
  */
 public class Proyecto02App extends PApplet {
+  Dcel face;
+  PShape plane;
+  String filePath;
 
+  public Proyecto02App(String filePath) throws Exception {
+    this.filePath = filePath;
+    face = DcelReader.readSVG(filePath);
+  }
   /**
    * Se ejecuta al incio de la app.
    * Sirve para establecer configuraciones de la ventana de la app,
@@ -15,6 +28,7 @@ public class Proyecto02App extends PApplet {
    */
   @Override
   public void settings() {
+    size(700, 700);
   }
 
   /**
@@ -23,6 +37,8 @@ public class Proyecto02App extends PApplet {
    */
   @Override
   public void setup() {
+    frameRate(5);
+    plane = loadShape(filePath);
   }
 
   /**
@@ -34,5 +50,7 @@ public class Proyecto02App extends PApplet {
    */
   @Override
   public void draw() {
+    shape(plane, 50, 50, 650, 650);
   }
+
 }

@@ -15,11 +15,18 @@ public class Main {
    * @param args Argumentos de consola
    */
   public static void main(String[] args) {
-
+    String file = null;
+    if (args.length > 0 && !args[0].equals("${input}")) {
+      file =  args[0];
+    }
     // Crea una instancia de la app y la inicia
-    Proyecto02App app = new Proyecto02App();
-
-    String[] sketchArgs = { "" };
-    PApplet.runSketch(sketchArgs, app);
+    try {
+      Proyecto02App app = new Proyecto02App("data/" + file);
+      String[] sketchArgs = { "" };
+      PApplet.runSketch(sketchArgs, app);
+    } catch (Exception e) {
+      System.err.println("No se pudo abrir el archivo ");
+      e.printStackTrace();
+    } 
   }
 }
