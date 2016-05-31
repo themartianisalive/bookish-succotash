@@ -17,6 +17,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TreeMap;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
@@ -38,34 +39,50 @@ public class DcelReader {
    * @return             La subdivisión leída del archivo.
    * @throws IOException Si el archivo no se puede leer o no existe.
    */
-  public static Dcel readSVG (String filePath) 
-  throws IOException, SAXException, 
-  ParserConfigurationException {
+  public static Dcel readSVG (String filePath) throws IOException, SAXException, 
+  													ParserConfigurationException {
   	/* cargamos el xml */
   	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 	DocumentBuilder db = dbf.newDocumentBuilder(); 
 	Document doc = db.parse(new File(filePath));
-
+	/* Sacamos los poligonos */
 	doc.getDocumentElement().normalize();  
 	NodeList polygons = doc.getElementsByTagName("polygon");
 
-
+	TreeMap<String, Vertex>   vertices  = new TreeMap<String, Vertex>();
+	TreeMap<String, HalfEdge> halfEdges = new TreeMap<String, HalfEdge>();
+	TreeMap<String, Face> 	  faces     = new TreeMap<String, Face>();
+ 
 	for (int i = 0; i < polygons.getLength(); ++i) {
+
 		Element e = (Element)polygons.item(i);
 		String points = e.getAttribute("points");
+		String id = e.getAttribute("id");
 		String[] tmp = points.split(" ");
 		Vertex[] vertexes =  new Vertex[tmp.length];
 
 		for (int j = 0; j < tmp.length; ++j) {
 			String [] t = tmp[j].split(",");
 			Vertex v = new Vertex(Double.parseDouble(t[0]), Double.parseDouble(t[1]));
+			vertices.put(v.getId(), v);
 			vertexes[j] = v;
 		}
 
-		vertexes =  Vertex.getCounterClockwiseVertexes(vertexes);
-		System.out.println(vertexes);
+		vertexes = Vertex.getCounterClockwiseVertexes(vertexes);
+		HalfEdge[] components = new HalfEdge[vertexes.length];
+
+		for (int k = 0; k < vertexes.length; k++) {
+		  Vertex a = vertexes[k];
+		  Vertex b = vertexes[(k + 1) % vertexes.length];
+		  HalfEdge hEdge = DcelUtils.buildEdge(a,b)[0];
+		  components[k] = hEdge;
+		  halfEdges.put(hEdge.getId(), hEdge);
+		}
+
+		Face face = DcelUtils.buildFace(id, components);
+		faces.put(id, face);
 	}
 
-    return null;
+	return new Dcel(vertices, halfEdges, faces);
   }
 }

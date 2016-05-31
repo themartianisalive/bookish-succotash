@@ -38,7 +38,7 @@ public class DcelUtils {
    * @param id El identificador para la cara.
    * @param component El componente de la cara.
    */
-  public static Face buildFace (String id, HalfEdge[] component) {
+  public static Face buildFace(String id, HalfEdge[] component) {
 
     // Creamos la cara (ponemos como refencia de componente a la primera media arista)
     Face face = new Face(id, component[0], null);
