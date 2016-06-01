@@ -62,7 +62,7 @@ public class DcelReader {
 			vertexes[j] = v;
 		}
 
-		vertexes = Vertex.getCounterClockwiseVertexes(vertexes);
+		//vertexes = Vertex.getCounterClockwiseVertexesB(vertexes);
 		printVertexes(vertexes);
 		HalfEdge[] components = new HalfEdge[vertexes.length];
 

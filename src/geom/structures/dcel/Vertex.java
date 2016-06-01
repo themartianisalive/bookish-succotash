@@ -69,15 +69,15 @@ public class Vertex extends Vector {
   }
 
   public static Vertex[] getCounterClockwiseVertexes(Vertex[] points) {
-    Vertex minX = new Vertex(Double.MAX_VALUE, 0);
+    Vertex minX = new Vertex(Double.MAX_VALUE, Double.MAX_VALUE);
     for (Vertex v : points) {
-      if (v.x < minX.x)
+      if (v.y < minX.y)
         minX = v;  
     }
 
     TreeMap<Double, Vertex> slopes =  new TreeMap<>();
     for (Vertex v : points) {
-      double m = (v.y - minX.y) / (v.x - minX.x);
+      double m = Math.atan2((v.y - minX.y), (v.x - minX.x));
         if (v != minX )
           slopes.put(m,v);
     }
@@ -91,5 +91,33 @@ public class Vertex extends Vector {
     
     return vectorsBySlope;
   }
+
+  public static Vertex[] getCounterClockwiseVertexesB(Vertex[] points) {
+    Vertex center = new Vertex(0,0);
+    
+    for (Vertex v : points) {
+      center.x += v.x;
+      center.y += v.y;
+    }
+    center.x /= points.length;
+    center.y /= points.length;
+
+    TreeMap<Double, Vertex> sorted =  new TreeMap<>();
+    for (Vertex v : points) {
+      double m = Math.atan2((v.y - center.y), (v.x - center.x));
+      sorted.put(m,v);
+    }
+
+    Vertex[] tmp =  new Vertex[points.length];
+    int i = 0;
+    for (Map.Entry<Double, Vertex> node : sorted.entrySet()) {
+      tmp[i++] = node.getValue();
+    }
+
+    return tmp;
+  }
+
+
+
 
 }
