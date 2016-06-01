@@ -3,6 +3,7 @@ package geom.algorithms;
 import java.util.List;
 import geom.math.Vector;
 import geom.structures.dcel.Dcel;
+import geom.structures.extra.*;
 
 /**
  * Algoritmo para calcular la posición de cámaras de seguridad en una subdivisión,
@@ -19,5 +20,9 @@ public class SurveillanceCameras {
    */
   public static List<Vector> calculateSurveillanceCameras (Dcel dcel) {
     return null;
+  }
+
+  public static Camera[] getSurveillanceCameras(Dcel dcel) {
+    return new Camera[0];
   }
 }
