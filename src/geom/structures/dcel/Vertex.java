@@ -78,11 +78,13 @@ public class Vertex extends Vector {
     TreeMap<Double, Vertex> slopes =  new TreeMap<>();
     for (Vertex v : points) {
       double m = (v.y - minX.y) / (v.x - minX.x);
-      slopes.put(m,v);
+        if (v != minX )
+          slopes.put(m,v);
     }
 
     Vertex[] vectorsBySlope =  new Vertex[points.length];
-    int i = 0;
+    vectorsBySlope[0] =  minX;
+    int i = 1;
     for (Map.Entry<Double, Vertex> node : slopes.entrySet()) {
       vectorsBySlope[i++] = node.getValue();
     }

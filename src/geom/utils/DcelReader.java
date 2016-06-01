@@ -63,6 +63,7 @@ public class DcelReader {
 		}
 
 		vertexes = Vertex.getCounterClockwiseVertexes(vertexes);
+		printVertexes(vertexes);
 		HalfEdge[] components = new HalfEdge[vertexes.length];
 
 		for (int k = 0; k < vertexes.length; k++) {
@@ -77,6 +78,13 @@ public class DcelReader {
 		faces.put(id, face);
 	}
 	return new Dcel(vertices, halfEdges, faces);
+  }
+
+  private static void printVertexes(Vertex[] v) {
+  	for (Vertex c : v) {
+  		System.out.print(c);
+  	}
+  	System.out.println();
   }
 
   public static Camera[] readCameras(String filePath) throws IOException, Exception {
