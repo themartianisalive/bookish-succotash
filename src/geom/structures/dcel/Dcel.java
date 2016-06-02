@@ -210,4 +210,49 @@ public class Dcel {
       }
     }
   }
+
+  /**
+   * Dibuja la DCEL en un sketch de Processing.
+   *
+   * @param pGraphics   Graficos donde dibujar la DCEL
+   * @param colorStroke Color para lineas -1 si no se quiere
+   * @param text        Boolean para saber si pintar el texto o no
+   */
+  public void draw(PGraphics pGraphics, int colorStroke, int fill, boolean text) {
+
+    // Iteramos las caras registradas
+    Iterator<Face> facesIte = faces.values().iterator();
+    while(facesIte.hasNext()) {
+
+      // Si no es la cara externa
+      Face face = facesIte.next();
+      if(!face.isOuterFace()) {
+
+        pGraphics.beginShape();
+        HalfEdge he = face.outerComponent;
+        float x, y;
+        while (true) {
+          x = (float) he.origin.x;
+          y = (float) he.origin.y;
+
+          // Text
+          if (text) {
+            pGraphics.fill(0);
+            pGraphics.text(he.origin.toString(), x, y);
+          }
+
+          pGraphics.vertex(x, y);
+
+          he = he.next;
+          if (he.equals(face.outerComponent)) {
+            break;
+          }
+        }
+
+        pGraphics.stroke(colorStroke);
+        pGraphics.fill(fill);
+        pGraphics.endShape(pGraphics.CLOSE);
+      }
+    }
+  }
 }

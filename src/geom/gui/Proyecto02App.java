@@ -84,10 +84,11 @@ public class Proyecto02App extends PApplet {
       if (key == 'v' || key == 'V') {
         mode = 1;
         if (cameras.length > 0) {
-          for (Camera cam : cameras) {
-            Dcel tmp = VisibilityPolygon.getVisibilityPolygon(original, cam);
-            tmp.draw(this.g, color(0, 0, 0), true);
-          }
+          // for (Camera cam : cameras) {
+          //   Face f = original.faces.get(cam.getRoomId());
+          //   Dcel tmp = VisibilityPolygon.calculateVisibilityPolygon(original, f, cam);
+          //   tmp.draw(this.g, color(0, 0, 0), color(255,0,0), true);
+          // }
           drawCameras(cameras);
         }
         else {
@@ -101,9 +102,9 @@ public class Proyecto02App extends PApplet {
     if (mode == 1) {
       //visibilidad.draw(this.g, color(0, 0, 0), true);
     } else if (mode == 2) {
-      nueva.draw(this.g, color(0, 0, 0), true);
+      nueva.draw(this.g, color(0, 0, 0), false);
     } else {
-      original.draw(this.g, color(0, 0, 0), true);
+      original.draw(this.g, color(0, 0, 0), false);
     }
   }
 

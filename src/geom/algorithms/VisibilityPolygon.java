@@ -23,28 +23,28 @@ public class VisibilityPolygon {
    * @return       el polígono de visibilidad almacenado como una cara dentro de una DCEL.
    */
   public static Dcel calculateVisibilityPolygon (Dcel dcel, Face face, Vector point) {
-    return null;
-  }
-  
-  public static Dcel getVisibilityPolygon(Dcel polygon, Vector point) {
-
-    // 1. Crear la cola de eventos
-    LinkedList<HalfEdge> eventsQueue = buildEventsQueue(polygon, point);
-
-    // 2. Creamos el arbol de estados y lo ponemos en su estado inicial
+    /* lo que necesitamos para nuestra dcel*/
+    TreeMap<String, Vertex> vertices =  new TreeMap<String, Vertex>();
+    TreeMap<String, HalfEdge> halfEdges =  new TreeMap<String, HalfEdge>();
+    TreeMap<String, Face> faces =  new TreeMap<String, Face>();
+     /* necesitamos la lista de eventos */ 
+    LinkedList<HalfEdge> eventsQueue = buildEventsQueue(dcel, point);
     IntersectionComparator statusComparator = new IntersectionComparator(point);
     TreeMap status = new TreeMap<Vector, HalfEdge>(statusComparator);
 
-    HalfEdge firstEvent = checkFirstEvent(point, eventsQueue.getFirst(), polygon);
+    HalfEdge firstEvent = checkFirstEvent(point, eventsQueue.getFirst(), face);
     if (firstEvent != null) {
       status.put(point, firstEvent);
     }
-    
-    return null;
+
+    while (eventsQueue.size() > 0) {
+      // make magic
+      // add the vertex, half,e
+    }
+    return new Dcel(vertices, halfEdges, faces);
   }
-
+  
   private static LinkedList<HalfEdge> buildEventsQueue(Dcel polygon, Vector p) {
-
     // Obtengo los vertices del poligono como arreglo
     HalfEdge[] halfEdges = polygon.halfEdges.values().toArray(new HalfEdge[0]);
 
@@ -72,19 +72,14 @@ public class VisibilityPolygon {
     // Concatenamos y regresamos
     upper.addAll(lower);
 
-    return upper;
+    return upper; 
   }
 
   /**
    * Verifica si el primer evento lo es, y si no, regresa la arista con la que
    * choca.
    */
-  private static HalfEdge checkFirstEvent(Vector p, HalfEdge firstEvent, Dcel polygon) {
-
-    // Obtenemos la cara que representa al poligono
-    Face fe = polygon.getOuterFace();
-    Face f = fe.innerComponents.get(0).twin.incidentFace;
-
+  private static HalfEdge checkFirstEvent(Vector p, HalfEdge firstEvent, Face f) {
     IntersectionComparator comparator = new IntersectionComparator(p);
 
     HalfEdge nearest = null;
@@ -104,8 +99,7 @@ public class VisibilityPolygon {
       if (he.equals(f.outerComponent)) {
         break;
       }
-    }
-
+    } 
     return nearest;
   }
 
