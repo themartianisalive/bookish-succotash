@@ -6,12 +6,16 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Collections;
 import java.util.TreeMap;
+import java.util.Map;
 /**
  * Representa el algoritmo para calcular el polígono de visibilidad de un punto
  * que está dentro de una cara de una subdivisión planar.
  * 
  */
 public class VisibilityPolygon {
+
+  final static int SEGMENT_START = 0;
+  final static int SEGMENT_END = 1;
 
   /**
    * Regresa el polígono de visibilidad que ve un punto en una cara poligonal dada de una
@@ -20,9 +24,10 @@ public class VisibilityPolygon {
    * @param  dcel  La dcel de donde viene la cara
    * @param  face  La cara donde está el punto
    * @param  point Un punto dentro de la cara
-   * @return       el polígono de visibilidad almacenado como una cara dentro de una DCEL.
+   * @return el polígono de visibilidad almacenado como una cara dentro de una DCEL.
    */
   public static Dcel calculateVisibilityPolygon (Dcel dcel, Face face, Vector point) {
+    LinkedList<Vector> polygon =  new LinkedList<Vector>();
     /* lo que necesitamos para nuestra dcel*/
     TreeMap<String, Vertex> vertices =  new TreeMap<String, Vertex>();
     TreeMap<String, HalfEdge> halfEdges =  new TreeMap<String, HalfEdge>();
@@ -30,17 +35,39 @@ public class VisibilityPolygon {
      /* necesitamos la lista de eventos */ 
     LinkedList<HalfEdge> eventsQueue = buildEventsQueue(dcel, point);
     IntersectionComparator statusComparator = new IntersectionComparator(point);
-    TreeMap status = new TreeMap<Vector, HalfEdge>(statusComparator);
+    TreeMap<Vector, HalfEdge> status = new TreeMap<>(statusComparator);
 
     HalfEdge firstEvent = checkFirstEvent(point, eventsQueue.getFirst(), face);
+    
     if (firstEvent != null) {
       status.put(point, firstEvent);
     }
 
     while (eventsQueue.size() > 0) {
-      // make magic
-      // add the vertex, half,e
+      HalfEdge current = eventsQueue.removeFirst();
+      Vertex currentV = current.origin;
+
+      status.put(current.origin, current);
+
+      for (Map.Entry<Vector,HalfEdge> entry : status.entrySet()) {
+        Vector key = entry.getKey();
+        HalfEdge value = entry.getValue();
+        Vector intersection = getIntersection(point, current.origin, value.origin, value.end);
+        System.out.println(intersection);
+      }
+
+      /* 
+      *  cuando detectamos el vertice final de un HE ya esta en el arbol. significa que 
+      *  ya terminamos de recorrerlo y termino su vida (pues ya fue el primer vertice 
+      *  de otro segmento) y debemos sacarlo
+      */
+      if (status.containsKey(current.end)) {
+        status.remove(current.end);
+      }
     }
+
+    System.out.println(status);
+
     return new Dcel(vertices, halfEdges, faces);
   }
   
