@@ -78,6 +78,8 @@ public class DcelReader {
 	return new Dcel(vertices, halfEdges, faces);
   }
 
+
+
   private static void printVertexes(Vertex[] v) {
   	for (Vertex c : v) {
   		System.out.print(c);

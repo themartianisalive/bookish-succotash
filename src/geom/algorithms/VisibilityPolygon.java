@@ -27,11 +27,7 @@ public class VisibilityPolygon {
    * @return el polígono de visibilidad almacenado como una cara dentro de una DCEL.
    */
   public static Dcel calculateVisibilityPolygon (Dcel dcel, Face face, Vector point) {
-    LinkedList<Vector> polygon =  new LinkedList<Vector>();
-    /* lo que necesitamos para nuestra dcel*/
-    TreeMap<String, Vertex> vertices =  new TreeMap<String, Vertex>();
-    TreeMap<String, HalfEdge> halfEdges =  new TreeMap<String, HalfEdge>();
-    TreeMap<String, Face> faces =  new TreeMap<String, Face>();
+    LinkedList<Vertex> polygon =  new LinkedList<Vertex>();
      /* necesitamos la lista de eventos */ 
     LinkedList<HalfEdge> eventsQueue = buildEventsQueue(dcel, point);
     IntersectionComparator statusComparator = new IntersectionComparator(point);
@@ -53,7 +49,10 @@ public class VisibilityPolygon {
         Vector key = entry.getKey();
         HalfEdge value = entry.getValue();
         Vector intersection = getIntersection(point, current.origin, value.origin, value.end);
-        System.out.println(intersection);
+        /* Aquí ya se intersectaron, veremos a cual le pega */
+        if (intersection != null) {
+          polygon.add(new Vertex(intersection));
+        }
       }
 
       /* 
@@ -67,8 +66,9 @@ public class VisibilityPolygon {
     }
 
     System.out.println(status);
+    System.out.println(polygon);
 
-    return new Dcel(vertices, halfEdges, faces);
+    return DcelUtils.buildDcelFromList(polygon);
   }
   
   private static LinkedList<HalfEdge> buildEventsQueue(Dcel polygon, Vector p) {

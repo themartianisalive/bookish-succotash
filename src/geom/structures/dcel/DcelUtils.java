@@ -1,5 +1,9 @@
 package geom.structures.dcel;
 
+
+import java.util.List;
+import java.util.TreeMap;
+
 /**
  * Clase con algunos métodos de utilería para manejo y 
  * construcción de la estructura Double Connected Edge List (DCEL).
@@ -74,5 +78,37 @@ public class DcelUtils {
       current.next = next;
       next.prev    = current;
     }
+  }
+
+  public static Dcel buildDcelFromList(List<Vertex> polygon) {
+
+    TreeMap<String, Vertex>   vertices  = new TreeMap<String, Vertex>();
+    TreeMap<String, HalfEdge> halfEdges = new TreeMap<String, HalfEdge>();
+    TreeMap<String, Face>     faces     = new TreeMap<String, Face>();
+      
+
+    Vertex[] vertexes =  new Vertex[polygon.size()];
+
+    int i = 0;
+    
+    for (Vertex v : polygon) {
+      vertexes[i++] = v;
+      vertices.put(v.getId(), v);
+    }
+
+    HalfEdge[] components = new HalfEdge[polygon.size()];
+
+    for (int k = 0; k < components.length; k++) {
+      Vertex a = vertexes[k];
+      Vertex b = vertexes[(k + 1) % vertexes.length];
+      HalfEdge hEdge = DcelUtils.buildEdge(a,b)[0];
+      components[k] = hEdge;
+      halfEdges.put(hEdge.getId(), hEdge);
+    }
+
+    Face face = DcelUtils.buildFace("F1", components);
+    faces.put("F1", face);
+
+    return new Dcel(vertices, halfEdges, faces);
   }
 }
