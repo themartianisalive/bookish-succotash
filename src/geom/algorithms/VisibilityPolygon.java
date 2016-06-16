@@ -43,16 +43,16 @@ public class VisibilityPolygon {
       HalfEdge current = eventsQueue.removeFirst();
       Vertex currentV = current.origin;
 
-      status.put(current.origin, current);
+      if (status.isEmpty()) {
+        polygon.add(current.end);
+        status.put(current.origin, current);
+      }
 
-      for (Map.Entry<Vector,HalfEdge> entry : status.entrySet()) {
-        Vector key = entry.getKey();
-        HalfEdge value = entry.getValue();
-        Vector intersection = getIntersection(point, current.origin, value.origin, value.end);
-        /* Aquí ya se intersectaron, veremos a cual le pega */
-        if (intersection != null) {
-          polygon.add(new Vertex(intersection));
-        }
+      /* Alguno de los vecios ya estaba dentro */
+      if (status.containsKey(current.origin)) {
+
+      } else {
+        status.put(current.origin, current);
       }
 
       /* 
@@ -62,6 +62,7 @@ public class VisibilityPolygon {
       */
       if (status.containsKey(current.end)) {
         status.remove(current.end);
+        polygon.add(current.end);
       }
     }
 

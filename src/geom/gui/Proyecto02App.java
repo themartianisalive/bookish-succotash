@@ -86,11 +86,12 @@ public class Proyecto02App extends PApplet {
         mode = 1;
         visibilidad = original;
         if (cameras.length > 0) {
+          int i = 0;
           for (Camera cam : cameras) {
             System.out.println("Camara");
             Face f = original.faces.get(cam.getRoomId());
             Dcel tmp = VisibilityPolygon.calculateVisibilityPolygon(original, f, cam);
-            tmp.draw(this.g, color(0, 0, 0), color(255,0,0), false);
+            tmp.draw(this.g, color(0, 0, 0), (i%2==0) ? color(255,0,0) : color(0,255,0), false);
           }
           drawCameras(cameras);
         }
