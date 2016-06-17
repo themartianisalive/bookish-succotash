@@ -91,7 +91,7 @@ public class Proyecto02App extends PApplet {
             System.out.println("Camara");
             Face f = original.faces.get(cam.getRoomId());
             Dcel tmp = VisibilityPolygon.calculateVisibilityPolygon(original, f, cam);
-            tmp.draw(this.g, color(0, 0, 0), (i%2==0) ? color(255,0,0) : color(0,255,0), false);
+            tmp.draw(this.g, color(0, 0, 0), (i%2==0) ? color(255,0,0) : color(0,255,0), true);
           }
           drawCameras(cameras);
         }
@@ -105,11 +105,11 @@ public class Proyecto02App extends PApplet {
     }
 
     if (mode == 1) {
-      visibilidad.draw(this.g, color(0, 0, 0), false);
+      visibilidad.draw(this.g, color(0, 0, 0), true);
     } else if (mode == 2) {
-      nueva.draw(this.g, color(0, 0, 0), false);
+      nueva.draw(this.g, color(0, 0, 0), true);
     } else {
-      original.draw(this.g, color(0, 0, 0), false);
+      original.draw(this.g, color(0, 0, 0), true);
     }
   }
 

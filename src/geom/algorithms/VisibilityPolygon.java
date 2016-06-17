@@ -46,11 +46,15 @@ public class VisibilityPolygon {
       if (status.isEmpty()) {
         polygon.add(current.end);
         status.put(current.origin, current);
-      }
+      } 
 
-      /* Alguno de los vecios ya estaba dentro */
+      /* Alguno de los vecinos ya estaba dentro */
       if (status.containsKey(current.origin)) {
-
+        HalfEdge colisionado = status.get(current.origin);
+        if (statusComparator.compare(current.end, colisionado.end) < 0
+            && statusComparator.compare(point, colisionado.end) < 0) {
+          polygon.add(colisionado.end);
+        }
       } else {
         status.put(current.origin, current);
       }
